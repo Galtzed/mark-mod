@@ -16,29 +16,22 @@ export async function setToken(Username : string, Password : string) : Promise<v
     cookies().set("token",token);
 }
 
-export async function checkToken() : Promise<boolean>
-    {
-        return cookies().get("token")!=undefined;
-    }
-
-export async function sendAuth(token:string,APIendpoint:string): Promise<any> {
-    await axios.post(`http://localhost:8000/${APIendpoint}/`,
-    {
-        Authorization: "Token "+token
-    },{headers:{'Content-Type': 'application/json'}}).then((res)=>{
-        
-    })
+export async function checkToken() : Promise<boolean>{
+    return cookies().get("token")!=undefined;
 }
 
-export async function GetGroup(APIendpoint:string): Promise<string[]> {
+export async function GetGroup(): Promise<string[]> {
     var data : any;
-    await axios.get(`http://localhost:8000/${APIendpoint}/`,{headers:{'Content-Type': 'application/json',Authorization: "Token "+cookies().get("token")}})
+    console.log(cookies().get("token"));
+    await axios.get(`http://localhost:8000/GetGroup/`,{headers:{'Content-Type': 'application/json',Authorization: "Token "+cookies().get("token")?.value}})
     .then((res)=>{
         var arr : string[] = new Array()
-        res.data.foreach((e:any)=>arr.push(e.group))
+        for(var index in res.data){
+            console.log(res.data[index]);
+            arr.push(res.data[index].name);
+        }
         data = arr;
     })
     .catch(e=>{})
     return data;
-
 }

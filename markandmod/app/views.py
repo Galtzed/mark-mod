@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import Group, User
 from rest_framework.views import APIView
 from .models import *
 from .serializer import *
 from rest_framework import status
+from rest_framework import permissions, viewsets
 from rest_framework.response import Response
 # Create your views here.
 
@@ -188,10 +189,9 @@ class StuProjectViewAll(APIView):
         return Response(output)
     
 class GetGroup(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    serializers_class = GroupSerializer
+    authentication_classes = [SessionAuthentication,TokenAuthentication]
     permission_classes = [IsAuthenticated]
     def get(self,request):
-        output = [{
-            group : group.name
-            } for group in request.user.groups.all()]
+        output = [GroupSerializer(gp).data for gp in request.user.groups.all()]
         return Response(output)

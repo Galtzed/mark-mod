@@ -35,7 +35,7 @@ urlpatterns = [
     
     path('Student/Project/',StuProjectViewAll.as_view(),name="spma"),
     
-    path('GetGroup',GetGroup().as_view,name="gg")
+    path('GetGroup/',GetGroup.as_view(),name="gg")
     
 ]
 

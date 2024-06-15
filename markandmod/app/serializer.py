@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 from .models import *
 
 #user info no password
@@ -20,3 +20,8 @@ class ProjectSerialzer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = ['pk','name','final_mark','student','management']
+
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = ['name']
